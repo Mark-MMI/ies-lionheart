@@ -72,8 +72,11 @@ proyecto_flask_estadisticas/
 ├── app_service/
 │    └── data_loader.py  # Orquestación de datos, │exportación y MySQL
 │
+├── .env.example # Variable de entorno que rellenar con tus credenciales
+├── .gitignore
 ├── app.py  # Rutas Flask y lógica principal
 ├── check.py  # Algunas comprobaciones
+├── LICENSE
 ├── README.md
 └── requirements.txt  # Dependencias del proyecto
 ```
