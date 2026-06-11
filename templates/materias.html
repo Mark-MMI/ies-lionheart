@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="dashboard">
+    <h2>📚 Rendimiento por materia</h2>
+
+    <!-- Botón toggle filtros + contador -->
+    <br><div class="tabla-topbar">
+        <button class="btn-filtros" id="toggleFiltros" onclick="toggleFiltros()">
+            &#9660; Filtros
+        </button>
+        <span class="total-registros">{{ total_registros }} registros</span>
+    </div>
+
+    <!-- Panel de filtros desplegable -->
+    <div class="filtros-panel" id="filtrosPanel">
+        <form method="GET" action="{{ url_for('materias') }}" class="filtros-form">
+
+            <div class="filtro-grupo">
+                <label>Evaluación</label>
+                <select name="evaluacion">
+                    <option value="">Todas</option>
+                    {% for ev in evaluaciones %}
+                        <option value="{{ ev }}" {% if filtro_evaluacion == ev %}selected{% endif %}>{{ ev }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label for="curso">Curso / Estudios</label>
+                <select name="curso" id="curso">
+                    <option value="">Todos</option>
+                    {% for c in cursos %}
+                        <option value="{{ c }}" {% if filtro_curso == c %}selected{% endif %}>
+                            {{ c }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label for="ordenar_por">Ordenar por</label>
+                <select name="ordenar_por" id="ordenar_por">
+                    <option value="MATERIA"     {% if filtro_orden == 'MATERIA' %}selected{% endif %}>Materia</option>
+                    <option value="EVALUADOS"   {% if filtro_orden == 'EVALUADOS' %}selected{% endif %}>Evaluados</option>
+                    <option value="MEDIA"       {% if filtro_orden == 'MEDIA' %}selected{% endif %}>Media</option>
+                    <option value="%_APROBADOS" {% if filtro_orden == '%_APROBADOS' %}selected{% endif %}>% Aprobados</option>
+                    <option value="%_SUSPENSOS" {% if filtro_orden == '%_SUSPENSOS' %}selected{% endif %}>% Suspensos</option>
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label>
+                    Grupo (opcional)
+                    <span class="tooltip-icon">?
+                        <span class="tooltip-text">
+                            Indica los datos a mostrar de las materias existentes en el grupo indicado.
+                        </span>
+                    </span>
+                </label>
+                <select name="grupo">
+                    <option value="">Todos</option>
+                    {% for g in grupos %}
+                        <option value="{{ g }}" {% if filtro_grupo == g %}selected{% endif %}>{{ g }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label for="orden_dir">Dirección</label>
+                <select name="orden_dir" id="orden_dir">
+                    <option value="asc" {% if filtro_dir == 'asc' %}selected{% endif %}>Ascendente ↑</option>
+                    <option value="desc" {% if filtro_dir == 'desc' %}selected{% endif %}>Descendente ↓</option>
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label for="descarte_sin_datos">
+                    Quitar filas "Sin datos"
+                    <span class="tooltip-icon">?
+                        <span class="tooltip-text">
+                            Algunas materias aparecen sin datos. Esto debido a que el alumno tiene asignaturas 
+                            pendientes de cursos anteriores que aún no han sido evaluadas en este periodo.
+                        </span>
+                    </span>
+                </label>
+                <select name="descarte_sin_datos" id="descarte_sin_datos">
+                    <option value="no" {% if filtro_descarte_sin_datos == "no" %}selected{% endif %}>No</option>
+                    <option value="si" {% if filtro_descarte_sin_datos == "si" %}selected{% endif %}>Sí</option>
+                </select>
+            </div>
+
+            <div class="filtros-acciones">
+                <button type="submit" class="btn-aplicar">Aplicar</button>
+                <a href="{{ url_for('materias') }}" class="btn-limpiar">Limpiar</a>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Tabla + Descarga + Gráfica -->
+    <!-- Tabla -->
+    <div class="tabla-wrapper">
+        {{ tabla_html | safe }}
+    </div>
+
+    <div class="descarga-tabla">
+        <form method="GET" action="{{ url_for('descargar_materias') }}">
+            <!-- Conservar filtros activos -->
+            {% if filtro_evaluacion %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion }}">{% endif %}
+            {% if filtro_curso %}<input type="hidden" name="curso" value="{{ filtro_curso }}">{% endif %}
+            {% if filtro_grupo %}<input type="hidden" name="grupo" value="{{ filtro_grupo }}">{% endif %}
+            <input type="hidden" name="descarte_sin_datos" value="{{ filtro_descarte_sin_datos }}">
+            <input type="hidden" name="ordenar_por" value="{{ filtro_orden }}">
+            <input type="hidden" name="orden_dir" value="{{ filtro_dir }}"> 
+
+            <div class="descarga-controles">
+                <select name="formato" class="descarga-select">
+                    <option value="csv">CSV</option>
+                    <option value="xlsx">Excel (.xlsx)</option>
+                    <option value="json">JSON</option>
+                    <option value="sqlite">SQLite (.db)</option>
+                </select>
+                <button type="submit" class="btn-descarga">⬇ Descargar tabla</button>
+            </div>
+        </form>
+        
+        {% if es_admin %}
+        <form method="POST" action="{{ url_for('guardar_mysql_materias') }}">
+            {% if filtro_evaluacion %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion }}">{% endif %}
+            {% if filtro_curso %}<input type="hidden" name="curso" value="{{ filtro_curso }}">{% endif %}
+            {% if filtro_grupo %}<input type="hidden" name="grupo" value="{{ filtro_grupo }}">{% endif %}
+            <input type="hidden" name="descarte_sin_datos" value="{{ filtro_descarte_sin_datos }}">
+            <input type="hidden" name="ordenar_por" value="{{ filtro_orden }}">
+            <input type="hidden" name="orden_dir" value="{{ filtro_dir }}">
+            <input type="hidden" name="query_string" value="{{ request.query_string.decode() }}">
+            <button type="submit" class="btn-mysql">🗄️ Guardar en MySQL</button>
+        </form>
+        {% endif %}
+    </div><br>
+
+    <!-- Contenedor para las gráficas en pestañas -->
+    <div class="contenedor-pestanas-graficas">
+        <!-- Botones selectores (Pestañas) -->
+        <div class="graficas-pestanas-nav">
+            <button class="pestana-btn activa" onclick="cambiarPestanaGrafica(event, 'pestana-aprobados')">
+                📊 % Aprobados por materia
+            </button>
+            <button class="pestana-btn" onclick="cambiarPestanaGrafica(event, 'pestana-medias')">
+                📊 Media por materia
+            </button>
+            <button class="pestana-btn" onclick="cambiarPestanaGrafica(event, 'pestana-evolucion-mat')">
+                📈 Evolución por materia
+            </button>
+        </div>
+
+        <!-- Panel contenedor del contenido inferior -->
+        <div class="grafica-inferior">
+            <!-- Pestaña 1: % Aprobados -->
+            <div id="pestana-aprobados" class="contenido-pestana activa">
+                <div class="grafica-scroll">
+                    <img src="data:image/png;base64,{{ grafica_aprobados }}" alt="Gráfica aprobados">
+                </div>
+            </div>
+            <!-- Pestaña 2: Medias -->
+            <div id="pestana-medias" class="contenido-pestana">
+                <div class="grafica-scroll">
+                    <img src="data:image/png;base64,{{ grafica_medias }}" alt="Gráfica medias">
+                </div>
+            </div>
+            <!-- Pestaña 3: Evolución -->
+            <div id="pestana-evolucion-mat" class="contenido-pestana">
+                <div style="padding: 16px;">
+                    <form method="GET" action="{{ url_for('materias') }}" style="display:flex; gap:12px; align-items:flex-end; margin-bottom:14px;">
+                        {% if filtro_evaluacion %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion }}">{% endif %}
+                        {% if filtro_curso %}<input type="hidden" name="curso" value="{{ filtro_curso }}">{% endif %}
+                        {% if filtro_grupo %}<input type="hidden" name="grupo" value="{{ filtro_grupo }}">{% endif %}
+                        <input type="hidden" name="descarte_sin_datos" value="{{ filtro_descarte_sin_datos }}">
+                        <input type="hidden" name="ordenar_por" value="{{ filtro_orden }}">
+                        <input type="hidden" name="orden_dir" value="{{ filtro_dir }}">
+                        <div class="filtro-grupo">
+                            <label>Selecciona una materia</label>
+                            <select name="materia_evolucion">
+                                <option value="">-- Elige materia --</option>
+                                {% for m in materias_lista %}
+                                    <option value="{{ m }}" {% if filtro_materia_evolucion == m %}selected{% endif %}>{{ m }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-aplicar">Ver evolución</button>
+                    </form>
+                    {% if filtro_materia_evolucion %}
+                        <div class="grafica-scroll">
+                            <img src="data:image/png;base64,{{ grafica_evolucion }}" style="width:100%;" alt="Evolución materia">
+                        </div>
+                    {% else %}
+                        <p style="color:#666; font-size:0.85rem;">Selecciona una materia para ver su evolución entre evaluaciones.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SCRIPTS -->
+<!-- filtro y pestañas -->
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+
+{% endblock %}

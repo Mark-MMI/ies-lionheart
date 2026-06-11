@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="dashboard">
+
+    <h2>📚 Dashboard general</h2>
+
+    <!-- Tarjetas resumen -->
+    <div class="cards">
+        <div class="card">
+            <h3>Matrículas</h3>
+            <p class="counter" data-target="{{ total_matriculas }}">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Grupos</h3>
+            <p class="counter" data-target="{{ total_grupos }}">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Materias</h3>
+            <p class="counter" data-target="{{ total_materias }}">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Nota media</h3>
+            <p class="counter" data-target="{{ nota_media_global | round(2) }}">0</p>
+        </div>
+
+        <div class="card">
+            <h3>
+                % Aprobados <span class="tooltip-icon">?
+                    <span class="tooltip-text">
+                        Porcentaje calculado sobre el total de evaluaciones realizadas en el centro, 
+                        no sobre alumnos únicos (Ej.: Un alumno con 8 materias cuenta 8 veces).
+                    </span>
+                </span>
+            </h3>
+            <p class="counter" data-target="{{ porcentaje_aprobados | round(2) }}">0</p>
+        </div>
+
+        <div class="card">
+            <h3>% Repetidores</h3>
+            <p class="counter" data-target="{{ porcentaje_repetidores | round(2) }}">0</p>
+        </div>
+    </div>
+
+    <!-- Gráfica + Accesos rápidos -->
+    <section class="grafica-links">
+        <!-- Pestañas dentro del contenedor de gráfica -->
+        <div class="contenedor-pestanas-graficas" style="flex: 1;">
+            <div class="graficas-pestanas-nav">
+                <button class="pestana-btn activa" onclick="cambiarPestanaGrafica(event, 'pestana-finales')">
+                    📊 Pct. Aprobados Final
+                </button>
+                <button class="pestana-btn" onclick="cambiarPestanaGrafica(event, 'pestana-evolucion')">
+                    📈 Evolución entre evaluaciones
+                </button>
+            </div>
+            <div class="grafica-inferior">
+                <div id="pestana-finales" class="contenido-pestana activa">
+                    <span class="tooltip-icon">?
+                        <span class="tooltip-text">
+                            Porcentaje final sobre los alumnos aprobados con las notas DISPONIBLES
+                            en la Primera Ordinaria. Puede que aún falten cursos por finalizar 
+                            los exámenes y subir las notas.
+                        </span>
+                    </span>
+                    <div class="chart-wrap">
+                        <canvas id="graficaAprobados"></canvas>
+                        <div class="chart-center">
+                            <span class="chart-pct">{{ pct_aprobados_final | round(2) }}%</span>
+                            <span class="chart-label">aprobados · {{ total_evaluados_final }} alumnos evaluados</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="pestana-evolucion" class="contenido-pestana">
+                    <div class="grafica-scroll">
+                        <img src="data:image/png;base64,{{ grafica_evolucion }}"
+                            alt="Evolución entre evaluaciones" style="width:100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="links-container">
+            <h3>🔎 Accesos rápidos</h3>
+            <div class="links-grid">
+                <a href="{{ url_for('materias') }}" class="link-card">📊 Rendimiento por materia</a>
+                <a href="{{ url_for('grupos') }}" class="link-card">👥 Rendimiento por grupo</a>
+                <a href="{{ url_for('absentismo') }}" class="link-card">⏰ Absentismo</a>
+                <a href="{{ url_for('riesgo') }}" class="link-card">⚠️ Alumnado en riesgo</a>
+                <a href="{{ url_for('acerca') }}" class="link-card">🦁 Acerca de</div></a>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- SCRIPTS -->
+
+<!-- Conteo -->
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+<!-- gráfica -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/graficas.js') }}"></script>
+<script>
+    iniciarGraficaAprobados({{ pct_aprobados_final | round(2) }});
+</script>
+
+{% endblock %}

@@ -1,0 +1,267 @@
+CODIGO;DESCRIPCION;ABREVIATURA
+6146;Recursos Humanos;RHU
+5677;Música;MUS
+5680;Ciencias Sociales, Geografía e;GEH
+5685;Matemáticas;MAT
+10507;Comunicación y atención al cli;CAC
+6744;Técnicas Básicas de Albañilerí;TBA
+6001;Tecnología Industrial;TIN
+9029;Historia de España;HE
+12135;Alemán II (segundo idioma);AL2SI
+9173;Ciencias de la Tierra y medioa;CTM
+5998;Historia de la Filosofía;HFI
+12119;Dibujo Técnico II;DBTII
+5932;Psicología;PSI
+5742;Geografía;GEO
+9249;Seguridad informática;SEIN
+6272;Religión Islámica;RIS
+9007;Grabación de datos;GD
+9999;Diseño de interfaces WEB;DIW
+9615;Tratamiento informático de la ;TI
+10261;Taller de iniciación a la acti;TIAEE
+11115;Montaje y mantenimiento de sis;MMSCI
+11095;Comunicación y sociedad I;CS1
+10825;Proyecto de asistencia a la di;PAD
+5994;Imagen;IMA
+11809;Geografía e Historia;GEHIS
+5695;Filosofía;FIL
+11821;Cultura Científica;CUCI
+12021;Módulos profesionales;MPROF
+11823;Tecnologías de la Información ;TIC
+12067;Tecnología robótica;TCROB
+12523;Ciencias aplicadas básicas I;CAB1
+15201;Creación de Contenidos Artísti;CCAA
+14861;Educación en valores cívicos y;EVCE
+16101;Unión Europea;UE
+16593;Introducción a la programación;IALP
+16543;Gestión contable;GC
+10561;Marketing digital;MD
+16541;Práctica fiscal y gestión trib;PFGT
+6238;Análisis y Diseño Detallado de;ADA
+6141;Gestión de Aprovisionamiento;GAP
+5668;Lengua Castellana y Literatura;LCL
+5671;Francés;FRA
+9613;Empresa y Administración;EYA
+10503;Ofimática y proceso de la info;OPI
+6271;Religión Evangélica;REV
+6746;Mantenimiento Eléctrico y Mecá;MEM
+5691;Latín;LAT
+5997;Historia del Mundo Contemporán;HMC
+5702;Dibujo Técnico;DBT
+5999;Matemáticas aplicadas a las ci;MCS
+5705;Geología;GLG
+12125;Latín II;LATII
+12109;Alemán II (primer idioma);ALEII
+8909;Módulo definido por el centro;MDC
+9575;Ámbito de Comunicación;AC
+9657;Lenguajes de marcas y sistemas;LMSGI
+9243;Aplicaciones ofimáticas;APOF
+9055;Empresa e iniciativa emprended;EIE
+8981;Operaciones auxiliares de mont;OAMCI
+9997;Despliegue de aplicaciones web;DAW
+9163;Ámbito Social;SOC
+9673;Proyecto de administración de ;PASIR
+11087;Archivo y comunicación;AC
+10643;Simulación empresarial;SE
+10645;Proyecto de administración y f;PAF
+10819;Protocolo empresarial;PE
+11093;Ciencias aplicadas II;CA2
+11811;Valores éticos;VE
+9169;Anatomía aplicada;ANAP
+11901;Ámbito Lingüístico y Social;ALS
+8979;Operaciones básicas para el ma;OBMJP
+15261;Empresa y diseño de modelos de;EDMN
+11089;Preparación de pedidos y venta;PPVP
+15003;Ámbito de Ciencias Aplicadas;ACA
+14963;Desarrollo Digital;DESDI
+14981;Biología, Geología y Ciencias ;BGCA
+14801;Módulo profesional de idioma I;MPII
+16577;Programación avanzada;PA
+15685;Proyectos artísticos de música;PAMDA
+5951;Marketing Internacional;MIN
+5757;Tecnología;TEC
+7283;Taller Tecnológico;TTEC
+9619;Operaciones administrativas de;OARH
+10505;Proceso integral de la activid;PIAC
+5775;Informática;INF
+8847;Educación para la ciudadanía y;ECD
+6747;Técnicas Básicas de Fontanería;TBF
+6111;Actividades Complementarias;ACO
+5693;Griego;GRI
+5787;Economía;ECO
+12107;Francés II (primer idioma);FRII
+12123;Tecnología industrial II;TEIII
+5913;Mecánica;MEC
+9239;Montaje y mantenimiento de equ;MMEQ
+10259;Iniciación a la actividad empr;IAEE
+9009;Tratamiento de datos, textos y;TDTD
+9993;Desarrollo web en entorno clie;DWEC
+9875;Sistemas informáticos;SISIN
+9881;Entornos de desarrollo;ENDES
+11091;Ciencias aplicadas I;CA1
+11081;Tratamiento informático de dat;TID
+10823;Gestión avanzada de la informa;GAI
+12141;Tecnologías de la Información ;TIC I
+9887;Programación multimedia y disp;PMDM
+9551;Prevención de  riesgos laboral;PRL
+15163;Tecnología e ingeniería II;TECIN
+14971;Economía y Emprendimiento;ECEM
+14927;Proyectos de Robótica;PRORO
+14967;Música Activa, Movimiento y Fo;MAMF
+17423;Análisis de datos con Python;ADPY
+14283;Big Data aplicado;BDA
+14301;Programación de Inteligencia A;PIA
+16062;Sostenibilidad aplicada al sis;SASP
+9171;Historia de la música y de la ;HMD
+16591;Computación en la nube y virtu;CENYV
+9621;Tratamiento de la documentació;TDC
+6243;Ámbito Sociolingüístico;ASL
+5762;Educación Plástica y Visual;EPV
+6818;Área de Formación y Orientació;AFO
+7274;Tecnología de la Información;TIN
+5700;Física;FIS
+12101;Lengua castellana y literatura;LCLII
+6002;Electrotecnia;ELE
+12127;Griego II;GRII
+8921;Instalaciones eléctricas y dom;IED
+9247;Redes locales;REDL
+5694;Cultura Clásica;CLA
+8985;Operaciones auxiliares con tec;OATIC
+8895;Autonomía e iniciativa persona;AIP
+9995;Desarrollo web en entorno serv;DWES
+9625;Operaciones auxiliares de gest;OAGT
+9665;Servicios de red e internet;SRI
+11117;Operaciones auxiliares para la;OACE
+12023;Autonomía y desarrollo persona;ADP
+9899;Proyecto de desarrollo de apli;PDAM
+14969;Digitalización;DIGIT
+14923;Formación y Orientación Person;FOPP
+9037;Lenguaje y práctica musical;LPM
+14941;Proyectos de Artes Plásticas y;PAPV
+14303;Sistemas de Big Data;SBD
+16067;Inglés profesional para los ci;IPCGS
+6623;Lengua Extranjera en Comercio ;LCI
+5673;Inglés;ING
+5681;Religión Católica;RCT
+5689;Educación Física;EFI
+5937;Alemán (Segundo Idioma);AL2
+12131;Inglés II (segundo idioma);IN2SI
+12133;Francés II (segundo idioma);FR2SI
+8923;Instalaciones de telecomunicac;IT
+9241;Sistemas operativos monopuesto;SOM
+9253;Aplicaciones web;AWEB
+9245;Sistemas operativos en red;SOR
+6533;Comunicación;COM
+9671;Seguridad y alta disponibilida;SAD
+11461;Ofimática y archivo de documen;OADOC
+9917;Segunda lengua extranjera;2LE
+13301;Tecnología Creativa;TECCR
+11817;Música activa y movimiento;MUAM
+11905;Ámbito Lengua Extranjera;ALE
+12063;Educación plástica, visual y a;EPVA
+9895;Programación de servicios y pr;PSEP
+9883;Acceso a datos;ACDAT
+14965;Emprendimiento, Sostenibilidad;ESCR
+17421;Programación orientada a objet;POO
+13805;Puesta en producción segura;PPS
+13807;Análisis forense informático;AFI
+16061;Digitalización aplicada al sec;DASP
+6237;Sistemas Informáticos Multiusu;SIM
+6142;Gestión Financiera;GFI
+5699;Física y Química;FQU
+5995;Biología y geología;BYG
+9609;Comunicación empresarial y ate;CEAC
+7733;Matemáticas B;MATB
+7732;Matemáticas A;MATA
+6745;Mantenimiento de Elementos de ;MEC
+5701;Química;QUI
+5703;Biología;BIO
+5964;Literatura Universal;LUN
+12129;Matemáticas aplicadas a las Ci;MCSII
+8937;Economía de la empresa;EEMP
+5684;Historia del Arte;HAR
+5759;Inglés (Segundo Idioma);IN2
+8893;Competencias básicas;CB
+9649;Implantación de sistemas opera;ISO
+10681;Inglés II: Inglés profesional;IPROF
+9001;Técnicas Administrativas Básic;TABO
+10053;Proyecto de desarrollo de apli;PDAW
+9877;Bases de Datos;BDD
+10501;Recursos humanos y responsabil;RHRSC
+11085;Técnicas administrativas básic;TAB
+9485;Gestión de recursos humanos;GRRHH
+10641;Gestión logística y comercial;GLC
+9067;Atención básica al cliente;ABC
+12531;Iniciación a la actividad labo;IALE
+8977;Operaciones básicas en instala;OBIJP
+17403;Estructuras de control en Pyth;ECPY
+13811;Normativa de ciberseguridad;NCB
+13803;Bastionado de redes y sistemas;BRS
+6145;Aplicaciones Informáticas y Op;AIO
+6756;Financiación Internacional;FIN
+5963;Religión Judía;RJU
+6244;Ámbito Científico-Tecnológico;ACT
+6760;Área de Formación Básica;FCO
+8949;Educación ético-cívica;EEC
+12105;Inglés II (primer idioma);INGII
+8983;Operaciones auxiliares de mant;OAMSM
+6534;Sociedad;SOC
+9611;Operaciones administrativas de;OAC
+9617;Técnica contable;TC
+9879;Programación;PROG
+9667;Implantación de aplicaciones w;IAW
+10821;Organización de eventos empres;OEE
+11097;Comunicación y sociedad II;CS2
+11101;Instalación y mantenimiento de;IMRTD
+11815;Matemáticas Orientadas a las E;MATAP
+12061;Ciencias aplicadas a la activi;CAAP
+9897;Sistemas de gestión empresaria;SGEM
+12525;Comunicación y Sociedad básica;CSB1
+8973;Operaciones básicas de prod. y;OBPMP
+12529;Comunicación y Sociedad básica;CSB2
+11083;Aplicaciones básicas de ofimát;ABO
+14925;Expresión Artística;EXPAR
+14929;Artes Escénicas, Danza y Folcl;AEDF
+14901;Tecnología y Digitalización;TECDI
+14921;Taller de Emprendimiento y fin;TEFP
+14983;Tecnología e Ingeniería I;TI!
+13809;Hacking ético;HE
+14281;Sistemas de aprendizaje automá;SAA
+16063;Itinerario personal para la em;IPE-I
+16064;Proyecto intermodular I;PIMI
+16595;Programación de aplicaciones u;PDAUF
+5865;Formación en centros de trabaj;FCT
+6239;Programación en Lenguajes Estr;PLE
+6143;Contabilidad y Fiscalidad;CFI
+5761;Francés (Segundo Idioma);FR2
+9623;Empresa en el aula;EA
+5866;Formación y orientación labora;FOL
+5727;Alemán;ALE
+8813;Módulo Básico Polivalente;MBP
+12121;Matemáticas II;MATII
+7278;Fundamentos de Administración ;FAG
+9187;Inglés técnico;IT
+9653;Fundamentos de hardware;FA
+9651;Planificación y administración;PAR
+9655;Gestión de bases de datos;GBD
+9251;Servicios en red;SRED
+8849;Historia y Cultura de las Reli;HCR
+9005;Reproducción y archivo;RYA
+9003;Operaciones básicas de comunic;OBC
+9669;Administración de sistemas ges;ASGBD
+9663;Administración de sistemas ope;ASO
+9483;Gestión de documentación juríd;GDJE
+11903;Ámbito Científico y Matemático;ACM
+11813;Matemáticas Orientadas a las E;MATAC
+9885;Desarrollo de interfaces;DESIF
+12527;Ciencias aplicadas básicas II;CAB2
+15181;Investigación y desarrollo cie;INDEC
+8971;Atención al cliente;AAC
+15001;Ámbito de Comunicación y Cienc;ACCS
+16817;Ciudadanía e identidad digital;CID
+17401;Entornos y sintaxis en Python;ESPY
+13801;Incidentes de ciberseguridad;ICB
+14261;Modelos de Inteligencia Artifi;MIA
+16060;Inglés profesional para los ci;IPCGM
+16065;Itinerario personal para la em;IPEII
+16066;Proyecto intermodular II;PIMII

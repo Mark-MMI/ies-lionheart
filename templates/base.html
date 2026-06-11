@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>IES Lionheart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- ¡¡¡¡ BOOTSTRAP DA MUCHOS PROBLEMAS CON LO QUE YA ESTÄ EN CSS !!!! -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+    <link rel="icon" type="image/png" href="static/logo_lionheart.png">
+</head> 
+<body>
+    <header class="topbar">
+        <div class="container-topbar">
+            <a class="logo" href="{{ url_for('index') }}">
+                <div class="logo-img">
+                    <img src="static/logo_lionheart.png" alt="Logo Lionheart">
+                </div>
+                <div class="logo-text">
+                    <p>I.E.S.</p>
+                    <h3>Lionheart</h3>
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Inicio</a>
+
+                <a href="{{ url_for('materias') }}" class="{% if request.endpoint == 'materias' %}active{% endif %}">
+                    Materias
+                </a>
+
+                <a href="{{ url_for('grupos') }}" class="{% if request.endpoint == 'grupos' %}active{% endif %}">
+                    Grupos
+                </a>
+
+                <a href="{{ url_for('absentismo') }}" class="{% if request.endpoint == 'absentismo' %}active{% endif %}">
+                    Absentismo
+                </a>
+
+                <a href="{{ url_for('riesgo') }}" class="{% if request.endpoint == 'riesgo' %}active{% endif %}">
+                    Riesgo
+                </a>
+
+                <a href="{{ url_for('acerca') }}" class="{% if request.endpoint == 'acerca' %}active{% endif %}">
+                    Acerca de
+                </a>
+
+                <!-- Indicador de rol y logout -->
+                <span class="nav-usuario">
+                    {% if session.rol == 'admin' %}
+                        <span class="rol-badge rol-admin">Admin</span>
+                    {% else %}
+                        <span class="rol-badge rol-usuario">Usuario</span>
+                    {% endif %}
+                    {{ session.usuario }}
+                </span>
+                <a href="{{ url_for('logout') }}" class="nav-logout">Salir</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-msg flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+<footer class="footer">
+    <div class="container footer-grid">
+
+        <!-- Columna 1: Info del centro -->
+        <div class="footer-col">
+            <h4 class="footer-title">IES Lionheart</h4>
+            <p>Av. de Nunca Jamás, 13</p>
+            <p>La Comarca, Narnia</p>
+            <p>📞 (+34) 999 000 111</p>
+            <p>✉️ <a href="mailto:info@ieslionheart.edu">info@ieslionheart.edu</a></p>
+        </div>
+
+        <!-- Columna 2: Navegación -->
+        <div class="footer-col">
+            <h4 class="footer-title">Navegación</h4>
+            <ul class="footer-links">
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('materias') }}">Materias</a></li>
+                <li><a href="{{ url_for('grupos') }}">Grupos</a></li>
+                <li><a href="{{ url_for('absentismo') }}">Absentismo</a></li>
+                <li><a href="{{ url_for('acerca') }}">Acerca de</a></li>
+            </ul>
+        </div>
+
+        <!-- Columna 3: Legal -->
+        <div class="footer-col">
+            <h4 class="footer-title">Legal</h4>
+            <ul class="footer-links">
+                <li><a href="#">Política de privacidad</a></li>
+                <li><a href="#">Términos y condiciones</a></li>
+                <li><a href="#">Política de cookies</a></li>
+            </ul>
+        </div>
+
+        <!-- Columna 4: Redes sociales -->
+        <div class="footer-col">
+            <h4 class="footer-title">Síguenos</h4>
+            <div class="footer-social">
+                <a href="#" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="X (Twitter)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="YouTube">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Barra inferior copyright -->
+    <div class="footer-bottom">
+        <div class="container">
+            <p>© 2026 IES Lionheart · Proyecto de fin de Máster · Marcos Encarnación Martínez</p>
+        </div>
+    </div>
+
+</footer>
+</body>
+</html>

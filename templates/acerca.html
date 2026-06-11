@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="dashboard">
+    <div class="acerca-principio">
+        <img src="{{ url_for('static', filename='logo_lionheart.png') }}" alt="Logo">
+        <h2>Acerca de</h2>
+    </div>
+
+    <!-- Descripción del proyecto -->
+    <div class="acerca-bloque">
+        <h3>📋 Descripción del proyecto</h3>
+        <p>
+            <strong>IES Lionheart</strong> es una aplicación web desarrollada con Python y Flask que permite 
+            consultar y analizar estadísticas educativas de un centro docente a partir de ficheros CSV anonimizados.
+            La aplicación no gestiona datos personales — se trabaja únicamente con matrículas como identificador 
+            interno, garantizando la privacidad del alumnado en todo momento.
+        </p>
+        <p>
+            El objetivo es proporcionar al centro una herramienta visual e interactiva para la toma de decisiones, 
+            permitiendo analizar el rendimiento académico por materia y por grupo. Así como el absentismo, 
+            mediante tablas filtradas, métricas estadísticas y gráficas generadas dinámicamente.
+        </p>
+    </div>
+
+    <!-- Funcionalidades -->
+    <div class="acerca-bloque">
+        <h3>⚙️ Funcionalidades principales</h3>
+        <div class="acerca-grid">
+            <div class="acerca-card">
+                <span class="acerca-icon">📊</span>
+                <h4>Dashboard general</h4>
+                <p>Resumen global del centro: matrículas, grupos, materias, nota media, porcentaje de aprobados y repetidores.</p>
+            </div>
+            <div class="acerca-card">
+                <span class="acerca-icon">📚</span>
+                <h4>Rendimiento por materia</h4>
+                <p>Análisis detallado por materia con filtros de evaluación, curso y grupo. Métricas de aprobados, suspensos y nota media.</p>
+            </div>
+            <div class="acerca-card">
+                <span class="acerca-icon">👥</span>
+                <h4>Rendimiento por grupo</h4>
+                <p>Comparativa entre grupos con análisis de peores materias por grupo. Filtros de evaluación y estudios.</p>
+            </div>
+            <div class="acerca-card">
+                <span class="acerca-icon">⏰</span>
+                <h4>Absentismo</h4>
+                <p>Análisis de ausencias, retrasos y faltas justificadas por grupo y materia, con evolución temporal mensual.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tecnologías -->
+    <div class="acerca-bloque">
+        <h3>🛠️ Tecnologías utilizadas</h3>
+        <div class="acerca-tecnologias">
+            <div class="tech-badge">
+                <span>🐍</span>
+                <div>
+                    <strong>Python 3</strong>
+                    <small>Lenguaje principal</small>
+                </div>
+            </div>
+            <div class="tech-badge">
+                <span>🌐</span>
+                <div>
+                    <strong>Flask</strong>
+                    <small>Framework web</small>
+                </div>
+            </div>
+            <div class="tech-badge">
+                <span>🧩</span>
+                <div>
+                    <strong>Jinja2</strong>
+                    <small>Motor de plantillas</small>
+                </div>
+            </div>
+            <div class="tech-badge">
+                <span>🐼</span>
+                <div>
+                    <strong>pandas</strong>
+                    <small>Análisis de datos</small>
+                </div>
+            </div>
+            <div class="tech-badge">
+                <span>📄</span>
+                <div>
+                    <strong>CSV / SQLite</strong>
+                    <small>Fuentes de datos</small>
+                </div>
+            </div>
+            <div class="tech-badge">
+                <span>📶</span>
+                <div>
+                    <strong>SQLAlchemy + pymysql</strong>
+                    <small>Conexión con MySQL Workbench</small>
+                </div>
+            </div>
+            <div class="tech-badge">
+                <span>📈</span>
+                <div>
+                    <strong>matplotlib</strong>
+                    <small>Generación de gráficas</small>
+                </div>
+            </div>
+            <div class="tech-badge">
+                <span>🗄️</span>
+                <div>
+                    <strong>MySQL Workbench / SQLite</strong>
+                    <small>Bases de datos</small>
+                </div>
+            </div>
+            <div class="tech-badge">
+                <span>🎨</span>
+                <div>
+                    <strong>HTML / CSS</strong>
+                    <small>Interfaz visual</small>
+                </div>
+            </div>
+            <div class="tech-badge">
+                <span>⚡</span>
+                <div>
+                    <strong>JavaScript</strong>
+                    <small>Interactividad</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Datos y privacidad -->
+    <div class="acerca-bloque">
+        <h3>🔒 Datos y privacidad</h3>
+        <p>
+            Todos los datos utilizados en esta aplicación han sido previamente anonimizados. 
+            No se almacenan ni muestran nombres, apellidos, DNI ni ningún dato identificativo personal. 
+            El único identificador utilizado es la <strong>MATRÍCULA</strong>, un código interno sin 
+            vinculación directa con el alumno, conforme a los principios de protección de datos.
+        </p>
+        <p>
+            Los ficheros CSV son de uso exclusivo para análisis estadístico educativo interno 
+            y no son accesibles públicamente a través de la aplicación.
+        </p>
+    </div>
+
+    <!-- Autor -->
+    <div class="acerca-bloque acerca-autor">
+        <div class="autor-info">
+            <div class="autor-avatar">ME</div>
+            <div>
+                <h3>Marcos Encarnación Martínez</h3>
+                <p>Proyecto de fin de Máster · Desarrollo de Aplicaciones en Lenguaje Python</p>
+                <p style="color: #666; font-size: 0.85rem; margin-top: 4px;">IES Leonardo Da Vinci · Curso 2025–2026</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+{% endblock %}

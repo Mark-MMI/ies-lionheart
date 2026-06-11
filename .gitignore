@@ -1,0 +1,19 @@
+# Bytecode y cache de Python
+__pycache__/
+*.pyc
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# VS Code
+.vscode/
+
+# Bases de datos generadas
+*.db
+*.sqlite
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

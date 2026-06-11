@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="dashboard">
+    <h2>👥 Rendimiento por grupo</h2>
+
+    <br>
+    <!-- Pestañas principales -->
+    <div class="contenedor-pestanas-graficas">
+        <div class="graficas-pestanas-nav">
+            <button class="pestana-btn activa" onclick="cambiarPestanaGrafica(event, 'pestana-grupos')">
+                👥 Grupos generales
+            </button>
+            <button class="pestana-btn" onclick="cambiarPestanaGrafica(event, 'pestana-peores')">
+                🔎 Peores materias por grupo
+            </button>
+        </div>
+
+        <div class="grafica-inferior">
+
+            <!-- ═══ PESTAÑA 1: GRUPOS GENERALES ═══ -->
+            <div id="pestana-grupos" class="contenido-pestana activa">
+
+                <div class="tabla-topbar">
+                    <button class="btn-filtros" id="toggleFiltrosGrupos" onclick="toggleFiltrosById('filtrosPanelGrupos', 'toggleFiltrosGrupos')">
+                        &#9660; Filtros
+                    </button>
+                    <span class="total-registros">{{ total_registros }} grupos</span>
+                </div>
+
+                <div class="filtros-panel" id="filtrosPanelGrupos">
+                    <form method="GET" action="{{ url_for('grupos') }}" class="filtros-form">
+                        <input type="hidden" name="pestana_activa" value="pestana-grupos">
+
+                        <div class="filtro-grupo">
+                            <label>Evaluación</label>
+                            <select name="evaluacion">
+                                <option value="">Todas</option>
+                                {% for ev in evaluaciones %}
+                                    <option value="{{ ev }}" {% if filtro_evaluacion == ev %}selected{% endif %}>{{ ev }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filtro-grupo">
+                            <label>Estudios</label>
+                            <select name="estudios">
+                                <option value="">Todos</option>
+                                {% for e in estudios %}
+                                    <option value="{{ e }}" {% if filtro_estudios == e %}selected{% endif %}>{{ e }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filtro-grupo">
+                            <label>Ordenar por</label>
+                            <select name="ordenar_por">
+                                <option value="GRUPO"       {% if filtro_orden == 'GRUPO' %}selected{% endif %}>Grupo</option>
+                                <option value="MEDIA"       {% if filtro_orden == 'MEDIA' %}selected{% endif %}>Nota media</option>
+                                <option value="%_APROBADOS" {% if filtro_orden == '%_APROBADOS' %}selected{% endif %}>% Aprobados</option>
+                                <option value="%_SUSPENSOS" {% if filtro_orden == '%_SUSPENSOS' %}selected{% endif %}>% Suspensos</option>
+                                <option value="ALUMNOS"     {% if filtro_orden == 'ALUMNOS' %}selected{% endif %}>Alumnos</option>
+                            </select>
+                        </div>
+
+                        <div class="filtro-grupo">
+                            <label>
+                                Materia (opcional)
+                                <span class="tooltip-icon">?
+                                    <span class="tooltip-text">
+                                        Filtra los datos por una materia concreta para ese grupo.
+                                        Debe ser una materia que exista para ese curso.
+                                    </span>
+                                </span>
+                            </label>
+                            <select name="materia">
+                                <option value="">Todas</option>
+                                {% for m in materias %}
+                                    <option value="{{ m }}" {% if filtro_materia == m %}selected{% endif %}>{{ m }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filtro-grupo">
+                            <label>Dirección</label>
+                            <select name="orden_dir">
+                                <option value="asc"  {% if filtro_dir == 'asc' %}selected{% endif %}>Ascendente ↑</option>
+                                <option value="desc" {% if filtro_dir == 'desc' %}selected{% endif %}>Descendente ↓</option>
+                            </select>
+                        </div>
+
+                        <div class="filtro-grupo">
+                            <label for="descarte_sin_datos">
+                                Quitar filas "Sin datos"
+                                <span class="tooltip-icon">?
+                                    <span class="tooltip-text">
+                                        Algunos grupos aparecen sin datos por asignaturas pendientes de cursos anteriores aún no evaluadas.
+                                    </span>
+                                </span>
+                            </label>
+                            <select name="descarte_sin_datos" id="descarte_sin_datos">
+                                <option value="no" {% if filtro_descarte_sin_datos == "no" %}selected{% endif %}>No</option>
+                                <option value="si" {% if filtro_descarte_sin_datos == "si" %}selected{% endif %}>Sí</option>
+                            </select>
+                        </div>
+
+                        <div class="filtros-acciones">
+                            <button type="submit" class="btn-aplicar">Aplicar</button>
+                            <a href="{{ url_for('grupos') }}" class="btn-limpiar">Limpiar</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tabla-wrapper">
+                    {{ tabla_html | safe }}
+                </div>
+
+                <div class="descarga-tabla">
+                    <form method="GET" action="{{ url_for('descargar_grupos') }}">
+                        <!-- Conservar filtros activos -->
+                        {% if filtro_evaluacion %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion }}">{% endif %}
+                        {% if filtro_estudios %}<input type="hidden" name="estudio" value="{{ filtro_estudios }}">{% endif %}
+                        {% if filtro_materia %}<input type="hidden" name="materia" value="{{ filtro_materia }}">{% endif %}
+                        <input type="hidden" name="descarte_sin_datos" value="{{ filtro_descarte_sin_datos }}">
+                        <input type="hidden" name="ordenar_por" value="{{ filtro_orden }}">
+                        <input type="hidden" name="orden_dir" value="{{ filtro_dir }}"> 
+                        <div class="descarga-controles">
+                            <select name="formato" class="descarga-select">
+                                <option value="csv">CSV</option>
+                                <option value="xlsx">Excel (.xlsx)</option>
+                                <option value="json">JSON</option>
+                                <option value="sqlite">SQLite (.db)</option>
+                            </select>
+                            <button type="submit" class="btn-descarga">⬇ Descargar tabla</button>
+                        </div>
+                    </form>
+                
+                    {% if es_admin %}
+                    <form method="POST" action="{{ url_for('guardar_mysql_grupos') }}">
+                        {% if filtro_evaluacion %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion }}">{% endif %}
+                        {% if filtro_estudios %}<input type="hidden" name="estudios" value="{{ filtro_estudios }}">{% endif %}
+                        <input type="hidden" name="descarte_sin_datos" value="{{ filtro_descarte_sin_datos }}">
+                        <input type="hidden" name="ordenar_por" value="{{ filtro_orden }}">
+                        <input type="hidden" name="orden_dir" value="{{ filtro_dir }}">
+                        <input type="hidden" name="query_string" value="{{ request.query_string.decode() }}">
+                        <button type="submit" class="btn-mysql">🗄️ Guardar en MySQL</button>
+                    </form>
+                    {% endif %}
+                </div>
+
+                <!-- Gráficas de grupos en sub-pestañas -->
+                <br>
+                <div class="contenedor-pestanas-graficas">
+                    <div class="graficas-pestanas-nav">
+                        <button class="pestana-btn activa" onclick="cambiarPestanaGrafica(event, 'pestana-aprobados')">
+                            📊 % Aprobados por grupo
+                        </button>
+                        <button class="pestana-btn" onclick="cambiarPestanaGrafica(event, 'pestana-medias')">
+                            📊 Media por grupo
+                        </button>
+                        <button class="pestana-btn" onclick="cambiarPestanaGrafica(event, 'pestana-evolucion-grp')">
+                            📈 Evolución por grupo
+                        </button>
+                    </div>
+                    <div class="grafica-inferior">
+                        <div id="pestana-aprobados" class="contenido-pestana activa">
+                            <div class="grafica-scroll">
+                                <img src="data:image/png;base64,{{ grafica_aprobados }}" alt="Gráfica aprobados">
+                            </div>
+                        </div>
+                        <div id="pestana-medias" class="contenido-pestana">
+                            <div class="grafica-scroll">
+                                <img src="data:image/png;base64,{{ grafica_medias }}" alt="Gráfica medias">
+                            </div>
+                        </div>
+                        <div id="pestana-evolucion-grp" class="contenido-pestana">
+                            <div style="padding: 16px;">
+                                <form method="GET" action="{{ url_for('grupos') }}" style="display:flex; gap:12px; align-items:flex-end; margin-bottom:14px;">
+                                    {% if filtro_evaluacion %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion }}">{% endif %}
+                                    {% if filtro_estudios %}<input type="hidden" name="estudios" value="{{ filtro_estudios }}">{% endif %}
+                                    <input type="hidden" name="ordenar_por" value="{{ filtro_orden }}">
+                                    <input type="hidden" name="orden_dir" value="{{ filtro_dir }}">
+                                    <input type="hidden" name="pestana_activa" value="pestana-grupos">
+                                    <div class="filtro-grupo">
+                                        <label>Selecciona un grupo</label>
+                                        <select name="grupo_evolucion">
+                                            <option value="">-- Elige grupo --</option>
+                                            {% for g in grupos %}
+                                                <option value="{{ g }}" {% if filtro_grupo_evolucion == g %}selected{% endif %}>{{ g }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn-aplicar">Ver evolución</button>
+                                </form>
+                                {% if filtro_grupo_evolucion %}
+                                    <div class="grafica-scroll">
+                                        <img src="data:image/png;base64,{{ grafica_evolucion }}" style="width:100%;" alt="Evolución grupo">
+                                    </div>
+                                {% else %}
+                                    <p style="color:#666; font-size:0.85rem;">Selecciona un grupo para ver su evolución entre evaluaciones.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ PESTAÑA 2: PEORES MATERIAS ═══ -->
+            <div id="pestana-peores" class="contenido-pestana">
+
+                <div class="tabla-topbar" style="margin-top: 16px;">
+                    <button class="btn-filtros" id="toggleFiltrosPeores" onclick="toggleFiltrosById('filtrosPanelPeores', 'toggleFiltrosPeores')">
+                        &#9660; Filtros
+                    </button>
+                </div>
+
+                <div class="filtros-panel" id="filtrosPanelPeores">
+                    <form method="GET" action="{{ url_for('grupos') }}" class="filtros-form">
+                        <input type="hidden" name="pestana_activa" value="pestana-peores">
+                        {% if filtro_evaluacion %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion }}">{% endif %}
+                        {% if filtro_estudios %}<input type="hidden" name="estudios" value="{{ filtro_estudios }}">{% endif %}
+                        {% if filtro_materia %}<input type="hidden" name="materia" value="{{ filtro_materia }}">{% endif %}
+                        <input type="hidden" name="ordenar_por" value="{{ filtro_orden }}">
+                        <input type="hidden" name="orden_dir" value="{{ filtro_dir }}">
+
+                        <div class="filtro-grupo">
+                            <label>Grupo</label>
+                            <select name="grupo_detalle">
+                                <option value="">Selecciona un grupo</option>
+                                {% for g in grupos %}
+                                    <option value="{{ g }}" {% if filtro_grupo_detalle == g %}selected{% endif %}>{{ g }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filtro-grupo">
+                            <label>Evaluación</label>
+                            <select name="evaluacion_peores">
+                                <option value="">Todas</option>
+                                {% for ev in evaluaciones %}
+                                    <option value="{{ ev }}" {% if filtro_evaluacion_peores == ev %}selected{% endif %}>{{ ev }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filtro-grupo" style="max-width: 120px;">
+                            <label>Top N (por defecto 10)</label>
+                            <input type="number" name="top_n" value="{{ filtro_top_n }}" min="1" max="50">
+                        </div>
+
+                        <div class="filtros-acciones">
+                            <button type="submit" class="btn-aplicar">Ver materias</button>
+                        </div>
+                    </form>
+                </div>
+
+                {% if tabla_peores_html %}
+                    <div class="tabla-wrapper">
+                        {{ tabla_peores_html | safe }}
+                    </div>
+                    <div class="descarga-tabla">
+                        <form method="GET" action="{{ url_for('descargar_peores_materias') }}">
+                            <input type="hidden" name="pestana_activa" value="pestana-peores">
+                            {% if filtro_evaluacion_peores %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion_peores }}">{% endif %}
+                            {% if filtro_grupo_detalle %}<input type="hidden" name="grupo_detalle" value="{{ filtro_grupo_detalle }}">{% endif %}
+                            <input type="hidden" name="top_n" value="{{ filtro_top_n }}">
+                            <div class="descarga-controles">
+                                <select name="formato" class="descarga-select">
+                                    <option value="csv">CSV</option>
+                                    <option value="xlsx">Excel (.xlsx)</option>
+                                    <option value="json">JSON</option>
+                                    <option value="sqlite">SQLite (.db)</option>
+                                </select>
+                                <button type="submit" class="btn-descarga"
+                                    onclick="if(!document.querySelector('[name=grupo_detalle]').value) { alert('Selecciona un grupo antes de descargar.'); return false; }">
+                                    ⬇ Descargar tabla
+                                </button>
+                            </div>
+                        </form>
+
+                        {% if es_admin %}
+                        <form method="POST" action="{{ url_for('guardar_mysql_peores_materias') }}">
+                            {% if filtro_evaluacion_peores %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion_peores }}">{% endif %}
+                            {% if filtro_grupo_detalle %}<input type="hidden" name="grupo_detalle" value="{{ filtro_grupo_detalle }}">{% endif %}
+                            <input type="hidden" name="top_n" value="{{ filtro_top_n }}">
+                            <input type="hidden" name="query_string" value="{{ request.query_string.decode() }}">
+                            <button type="submit" class="btn-mysql"
+                                onclick="if(!document.querySelector('[name=grupo_detalle]').value) { alert('Selecciona un grupo antes de guardar.'); return false; }">
+                                🗄️ Guardar en MySQL
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                {% elif filtro_grupo_detalle %}
+                    <p class="tabla-vacia">Sin datos para el grupo seleccionado.</p>
+                {% else %}
+                    <p style="color: #666; font-size: 0.85rem; padding: 16px;">Selecciona un grupo para ver sus materias con peor rendimiento.</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+{% endblock %}

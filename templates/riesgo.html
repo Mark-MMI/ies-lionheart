@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="dashboard">
+    <h2>⚠️ Alumnado en riesgo</h2>
+
+    <!-- Tarjetas resumen -->
+    <div class="cards riesgo-cards">
+        <div class="card card-riesgo-alto">
+            <h3>
+                Riesgo alto
+                <span class="tooltip-icon">?
+                    <span class="tooltip-text">
+                        Cumple los 3 criterios: ≥{{ filtro_min_suspensas }} materias suspensas,
+                        media ≤{{ filtro_max_media }} y ≥{{ filtro_min_ausencias }} ausencias.
+                    </span>
+                </span>
+            </h3>
+            <p>{{ totales.alto }}</p>
+        </div>
+        <div class="card card-riesgo-medio">
+            <h3>
+                Riesgo medio
+                <span class="tooltip-icon">?
+                    <span class="tooltip-text">
+                        Cumple 2 de los 3 criterios: materias suspensas,
+                        nota media o ausencias según los umbrales configurados.
+                    </span>
+                </span>
+            </h3>
+            <p>{{ totales.medio }}</p>
+        </div>
+        <div class="card card-riesgo-bajo">
+            <h3>
+                Riesgo bajo
+                <span class="tooltip-icon">?
+                    <span class="tooltip-text">
+                        Cumple 1 de los 3 criterios: materias suspensas,
+                        nota media o ausencias según los umbrales configurados.
+                    </span>
+                </span>
+            </h3>
+            <p>{{ totales.bajo }}</p>
+        </div>
+        <div class="card card-riesgo-total">
+            <h3>
+                Total en riesgo
+                <span class="tooltip-icon">?
+                    <span class="tooltip-text">
+                        Total de alumnos que cumplen al menos 1 de los 3 criterios de riesgo configurados.
+                    </span>
+                </span>
+            </h3>
+            <p>{{ totales.total }}</p>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="tabla-topbar" style="margin-top: 24px;">
+        <button class="btn-filtros" id="toggleFiltros" onclick="toggleFiltros()">
+            &#9660; Filtros y umbrales
+        </button>
+        <span class="total-registros">{{ total_registros }} alumnos en riesgo</span>
+    </div>
+
+    <div class="filtros-panel" id="filtrosPanel">
+        <form method="GET" action="{{ url_for('riesgo') }}" class="filtros-form">
+
+            <div class="filtro-grupo">
+                <label>Evaluación</label>
+                <select name="evaluacion">
+                    <option value="">Todas</option>
+                    {% for ev in evaluaciones %}
+                        <option value="{{ ev }}" {% if filtro_evaluacion == ev %}selected{% endif %}>{{ ev }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label>Estudios</label>
+                <select name="estudios">
+                    <option value="">Todos</option>
+                    {% for e in estudios %}
+                        <option value="{{ e }}" {% if filtro_estudios == e %}selected{% endif %}>{{ e }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label>Grupo</label>
+                <select name="grupo">
+                    <option value="">Todos</option>
+                    {% for g in grupos %}
+                        <option value="{{ g }}" {% if filtro_grupo == g %}selected{% endif %}>{{ g }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Umbrales de riesgo -->
+            <div class="filtro-grupo">
+                <label>
+                    Mín. materias suspensas
+                    <span class="tooltip-icon">?
+                        <span class="tooltip-text">
+                            Número mínimo de materias suspensas para considerar al alumno en riesgo por este criterio. Por defecto: 4
+                        </span>
+                    </span>
+                </label>
+                <input type="number" name="min_suspensas" value="{{ filtro_min_suspensas }}"
+                    min="1" max="20" style="background: rgba(255,255,255,0.06); color: #eaeaf0;
+                    border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+                    padding: 7px 10px; font-size: 0.85rem;">
+            </div>
+
+            <div class="filtro-grupo">
+                <label>
+                    Nota media máxima
+                    <span class="tooltip-icon">?
+                        <span class="tooltip-text">
+                            Nota media por debajo de la cual se considera al alumno en riesgo por este criterio. Por defecto: 3.5
+                        </span>
+                    </span>
+                </label>
+                <input type="number" name="max_media" value="{{ filtro_max_media }}"
+                    min="0" max="10" step="0.5" style="background: rgba(255,255,255,0.06); color: #eaeaf0;
+                    border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+                    padding: 7px 10px; font-size: 0.85rem;">
+            </div>
+
+            <div class="filtro-grupo">
+                <label>
+                    Mín. ausencias
+                    <span class="tooltip-icon">?
+                        <span class="tooltip-text">
+                            Número mínimo de ausencias para considerar al alumno en riesgo por este criterio. Por defecto: 50
+                        </span>
+                    </span>
+                </label>
+                <input type="number" name="min_ausencias" value="{{ filtro_min_ausencias }}"
+                    min="0" max="500" style="background: rgba(255,255,255,0.06); color: #eaeaf0;
+                    border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+                    padding: 7px 10px; font-size: 0.85rem;">
+            </div>
+
+            <!-- Otros filtros -->
+            <div class="filtro-grupo">
+                <label>Ordenar por</label>
+                <select name="ordenar_por">
+                    <option value="NIVEL_RIESGO" {% if filtro_orden == 'NIVEL_RIESGO' %}selected{% endif %}>Nivel riesgo</option>
+                    <option value="MATERIAS_SUSPENSAS" {% if filtro_orden == 'MATERIAS_SUSPENSAS' %}selected{% endif %}>Materias suspensas</option>
+                    <option value="MEDIA" {% if filtro_orden == 'MEDIA' %}selected{% endif %}>Nota media</option>
+                    <option value="AUSENCIAS" {% if filtro_orden == 'AUSENCIAS' %}selected{% endif %}>Ausencias</option>
+                    <option value="GRUPO" {% if filtro_orden == 'GRUPO' %}selected{% endif %}>Grupo</option>
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label>Dirección</label>
+                <select name="orden_dir">
+                    <option value="asc" {% if filtro_dir == 'asc' %}selected{% endif %}>Ascendente ↑</option>
+                    <option value="desc" {% if filtro_dir == 'desc' %}selected{% endif %}>Descendente ↓</option>
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label>
+                    Tipo riesgo: <span class="tooltip-icon">?
+                        <span class="tooltip-text">
+                            Mostrar los alumnos de un tipo de riesgo.
+                        </span>
+                    </span>
+                </label>
+                <select name="tipo_riesgo">
+                    <option value="">Todos</option>
+                    <option value="BAJO" {% if filtro_riesgo == 'BAJO' %}selected{% endif %}>Bajo</option>
+                    <option value="MEDIO" {% if filtro_riesgo == 'MEDIO' %}selected{% endif %}>Medio</option>
+                    <option value="ALTO" {% if filtro_riesgo == 'ALTO' %}selected{% endif %}>Alto</option>
+                </select>
+            </div>
+
+            <div class="filtros-acciones">
+                <button type="submit" class="btn-aplicar">Aplicar</button>
+                <a href="{{ url_for('riesgo') }}" class="btn-limpiar">Limpiar</a>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Tabla -->
+    <div class="tabla-wrapper">
+        {{ tabla_html | safe }}
+    </div>
+
+    <!-- Descarga y guardado -->
+    <div class="descarga-tabla">
+        <form method="GET" action="{{ url_for('descargar_riesgo') }}">
+            {% if filtro_evaluacion %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion }}">{% endif %}
+            {% if filtro_estudios %}<input type="hidden" name="estudios" value="{{ filtro_estudios }}">{% endif %}
+            {% if filtro_grupo %}<input type="hidden" name="grupo" value="{{ filtro_grupo }}">{% endif %}
+            <input type="hidden" name="min_suspensas" value="{{ filtro_min_suspensas }}">
+            <input type="hidden" name="max_media" value="{{ filtro_max_media }}">
+            <input type="hidden" name="min_ausencias" value="{{ filtro_min_ausencias }}">
+            <input type="hidden" name="ordenar_por" value="{{ filtro_orden }}">
+            <input type="hidden" name="orden_dir"   value="{{ filtro_dir }}">
+            <input type="hidden" name="tipo_riesgo" value="{{ filtro_riesgo or '' }}">
+            <div class="descarga-controles">
+                <select name="formato" class="descarga-select">
+                    <option value="csv">CSV</option>
+                    <option value="xlsx">Excel (.xlsx)</option>
+                    <option value="json">JSON</option>
+                    <option value="sqlite">SQLite (.db)</option>
+                </select>
+                <button type="submit" class="btn-descarga">⬇ Descargar tabla</button>
+            </div>
+        </form>
+
+        {% if es_admin %}
+        <form method="POST" action="{{ url_for('guardar_mysql_riesgo') }}">
+            {% if filtro_evaluacion %}<input type="hidden" name="evaluacion" value="{{ filtro_evaluacion }}">{% endif %}
+            {% if filtro_estudios %}<input type="hidden" name="estudios" value="{{ filtro_estudios }}">{% endif %}
+            {% if filtro_grupo %}<input type="hidden" name="grupo" value="{{ filtro_grupo }}">{% endif %}
+            <input type="hidden" name="min_suspensas" value="{{ filtro_min_suspensas }}">
+            <input type="hidden" name="max_media" value="{{ filtro_max_media }}">
+            <input type="hidden" name="min_ausencias" value="{{ filtro_min_ausencias }}">
+            <input type="hidden" name="ordenar_por" value="{{ filtro_orden }}">
+            <input type="hidden" name="orden_dir"   value="{{ filtro_dir }}">
+            <input type="hidden" name="tipo_riesgo" value="{{ filtro_riesgo or '' }}">
+            <input type="hidden" name="query_string" value="{{ request.query_string.decode() }}">
+            <button type="submit" class="btn-mysql">🗄️ Guardar en MySQL</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <!-- Gráfica -->
+    <div class="grafica-inferior" style="margin-top: 24px;">
+        <h3>📊 Alumnos en riesgo por grupo</h3>
+        <div class="grafica-scroll">
+            <img src="data:image/png;base64,{{ grafica }}" alt="Riesgo por grupo">
+        </div>
+    </div>
+
+</section>
+
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+{% endblock %}
