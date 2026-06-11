@@ -104,7 +104,7 @@ Asegúrate de que los ficheros CSV anonimizados están en la carpeta `data/`:
 
 ### 4. (Opcional) Configura MySQL Workbench
 
-Si quieres usar la función de guardado en MySQL, crea una base de datos llamada `lionheart`, o una propia cambiando los datos necesarios, en MySQL Workbench y actualiza la cadena de conexión en su sección correspondiente en `app_service/data_loader.py`:
+Si quieres usar la función de guardado en MySQL, crea una base de datos llamada `lionheart`, o una propia cambiando los datos necesarios, en MySQL Workbench y copia el `.env.example` a `.env`, rellenando el enlace con tus credenciales:
 
 ```python
 DATABASE_URL = "mysql+pymysql://root:TU_CONTRASEÑA@localhost/TU_BASE_DE_DATOS"

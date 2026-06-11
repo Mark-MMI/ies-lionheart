@@ -14,6 +14,9 @@ env/
 *.db
 *.sqlite
 
+# Variables de entorno
+.env
+
 # Archivos del sistema
 .DS_Store
 Thumbs.db

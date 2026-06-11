@@ -1,15 +1,20 @@
 from utils import obtener_datos as datas
 from utils import obtener_graficas_plt as graphs_plt
 from utils import obtener_tablas as tables
-import pandas as pd
-import io, sqlite3
 from sqlalchemy import create_engine, text
 from flask import send_file
+from dotenv import load_dotenv
+import os
+import pandas as pd
+import io, sqlite3
 
 ###############################
 # IMPORTAR TABLAS A WORKBENCH #
 ###############################
-DATABASE_URL = "mysql+pymysql://root:Datos$1002@localhost/lionheart"
+
+# Con estos comandos, cargo la variable de entorno con la URL al workbench mis datos
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def guardar_en_mysql(df, nombre_tabla):
     """Guarda un DataFrame en MySQL, reemplazando si ya existe."""
