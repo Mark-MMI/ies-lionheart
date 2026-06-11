@@ -156,3 +156,26 @@ Recordatorio: Los administradores pueden, además, guardar directamente en MySQL
 | `/absentismo` | Análisis de ausencias y retrasos |
 | `/riesgo` | Alumnado en situación de riesgo académico |
 | `/acerca` | Información del proyecto y tecnologías |
+
+## 📸 Capturas de las páginas
+
+### Login
+![Dashboard](static/capturas/login.png)
+
+### Dashboard general
+![Dashboard](static/capturas/dashboard.png)
+
+### Rendimiento por materia
+![Materias](static/capturas/materias.png)
+
+### Rendimiento por grupo
+![Grupos](static/capturas/grupos.png)
+
+### Absentismo
+![Absentismo](static/capturas/absentismo.png)
+
+### Alumnado en riesgo
+![Riesgo](static/capturas/riesgo.png)
+
+### Acerca
+![Dashboard](static/capturas/acerca.png)
